@@ -1,0 +1,25 @@
+{
+  "name": "test-recipes-service-to-db",
+  "version": "1.0.0",
+  "description": "Example unit tests for calling a database from a Node service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coreyc/test-recipes-service-to-db.git"
+  },
+  "author": "Corey Cleary",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/coreyc/test-recipes-service-to-db/issues"
+  },
+  "homepage": "https://github.com/coreyc/test-recipes-service-to-db#readme",
+  "dependencies": {
+    "knex": "^0.15.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2"
+  }
+}
