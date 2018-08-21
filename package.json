@@ -4,7 +4,7 @@
   "description": "Example unit tests for calling a database from a Node service",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive ./test/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/coreyc/test-recipes-service-to-db#readme",
   "dependencies": {
-    "knex": "^0.15.2"
+    "dotenv": "^6.0.0",
+    "pg": "^7.4.3"
   },
   "devDependencies": {
     "chai": "^4.1.2"
