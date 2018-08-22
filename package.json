@@ -4,7 +4,7 @@
   "description": "Example unit tests for calling a database from a Node service",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive ./test/**/*.test.js"
+    "test": "mocha ./test/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "pg": "^7.4.3"
   },
   "devDependencies": {
-    "chai": "^4.1.2"
+    "chai": "^4.1.2",
+    "sinon": "^6.1.5"
   }
 }
