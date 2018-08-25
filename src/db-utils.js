@@ -2,7 +2,7 @@ require('dotenv').config()
 const { Client } = require('pg')
 
 const getConnection = () => {
-  if (process.env.TESTING === 'true') {
+  if (process.env.UNHAPPY === 'true') {
     return {
       database: 'something that will throw bad connection',
       password: 'this will result in unhappy path',
@@ -16,10 +16,6 @@ const getConnection = () => {
       port: 5432
     }
   }
-}
-
-const getClient = () => {
-  // same thing as above
 }
 
 const createTable = async function (tableName) {

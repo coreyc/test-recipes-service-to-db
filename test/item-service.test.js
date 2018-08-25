@@ -1,20 +1,27 @@
 const chai = require('chai')
-const expect = chai.expect
-const sinon = require('sinon')
+const chaiAsPromised = require('chai-as-promised');
 
-const { createTable, insert } = require('../src/db-utils')
+const expect = chai.expect
+chai.use(chaiAsPromised)
+
+const { createTable, insert, dropTable } = require('../src/db-utils')
 const { fetchAllItems, fetchItemNames, getPrice } = require('../src/item-service')
 
 describe('Item Service', () => {
-  beforeEach(() => {
-    process.env.TESTING = false
-  })
-
   before(async () => {
     // here we're doing some table setup stuff so that we can perform assertions later
+    // this is basically like running a fixture
     await createTable('items')
     await insert('items', 'steering wheel', 62.59)
     await insert('items', 'windshield wiper', 23.39)
+  })
+
+  afterEach(() => {
+    process.env.UNHAPPY = false
+  })
+
+  after(async () => {
+    await dropTable()
   })
 
   describe('fetchAllItems', () => {
@@ -25,6 +32,11 @@ describe('Item Service', () => {
         {id: 2, name: 'windshield wiper', price: '23.39'}
       ])
     })
+
+    it('should catch error if database is down', () => {
+      process.env.UNHAPPY = 'true'
+      expect(fetchAllItems()).to.be.rejected
+    })
   })
 
   describe('fetchItemNames', () => {
@@ -34,6 +46,11 @@ describe('Item Service', () => {
         'STEERING WHEEL',
         'WINDSHIELD WIPER'
       ])
+    })
+
+    it('should catch error if database is down', () => {
+      process.env.UNHAPPY = 'true'
+      expect(fetchItemNames()).to.be.rejected
     })
   })
 
@@ -48,25 +65,17 @@ describe('Item Service', () => {
       try {
         res = await getPrice('oil')
       } catch(err) {
-        console.log('err', err)
         res = err
       }
       expect(res.message).to.equal('Either no items, or item name was wrong/does not exist')
     })
-  })
 
-  describe.only('error handling', () => {
     it('should catch error if database is down', async () => {
-      process.env.TESTING = 'true'
-
-      let res
-      try {
-        res = await getPrice()
-      } catch(err) {
-        console.log('err', err)
-        res = err
-      }
-      expect(res.message).to.equal('Either no items, or item name was wrong/does not exist')
+      process.env.UNHAPPY = 'true'
+      console.log('process.env.UNHAPPY', process.env.UNHAPPY)
+      // getprice returns promise, so await getPrice does not return promise and this wont work
+      // expect(await getPrice()).to.be.rejected
+      await expect(getPrice()).to.be.rejectedWith('connect ECONNREFUSED 127.0.0.1:3211')
     })
   })
 })
