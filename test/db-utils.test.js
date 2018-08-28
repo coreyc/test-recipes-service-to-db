@@ -5,7 +5,7 @@ const { createTable, dropTable, insert, select } = require('../src/db-utils')
 
 describe('Database Utils', () => {
   after(async () => {
-    await dropTable()
+    await dropTable('items')
   })
 
   describe('createTable', () => {

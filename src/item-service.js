@@ -11,19 +11,16 @@ const fetchAllItems = async function () {
 }
 
 // filter/format function
-// TODO: put comment above each function showing what scenario its linked to in test
 const fetchItemNames = async function () {
   try {
     const items = await select('items')
     return items.rows.map(({name}) => name.toUpperCase())
   } catch(err) {
-    // you can either swallow error or throw here, since its a service it depends
     throw err
   }
 }
 
 // scenario: bad input, bad query
-// TODO: in blog post show step by step, so first step is happy path, then handling
 const getPrice = async function (itemName) {
   try {
     const items = await selectOne('items', itemName)

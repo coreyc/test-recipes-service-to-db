@@ -1,4 +1,4 @@
-require('dotenv').config()
+// require('dotenv').config()
 const { Client } = require('pg')
 
 const getConnection = () => {
@@ -83,7 +83,6 @@ const createTransaction = async function (tableName, itemName, price) {
 }
 
 module.exports = {
-  Client,
   createTable,
   dropTable,
   insert,

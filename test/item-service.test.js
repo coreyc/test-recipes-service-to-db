@@ -21,7 +21,7 @@ describe('Item Service', () => {
   })
 
   after(async () => {
-    await dropTable()
+    await dropTable('items')
   })
 
   describe('fetchAllItems', () => {
@@ -33,9 +33,9 @@ describe('Item Service', () => {
       ])
     })
 
-    it('should catch error if database is down', () => {
+    it('should catch error if database is down', async () => {
       process.env.UNHAPPY = 'true'
-      expect(fetchAllItems()).to.be.rejected
+      await expect(fetchAllItems()).to.be.rejected
     })
   })
 
@@ -48,9 +48,9 @@ describe('Item Service', () => {
       ])
     })
 
-    it('should catch error if database is down', () => {
+    it('should catch error if database is down', async () => {
       process.env.UNHAPPY = 'true'
-      expect(fetchItemNames()).to.be.rejected
+      await expect(fetchItemNames()).to.be.rejected
     })
   })
 
@@ -61,21 +61,14 @@ describe('Item Service', () => {
     })
 
     it('should catch error if item does not exist', async () => {
-      let res
-      try {
-        res = await getPrice('oil')
-      } catch(err) {
-        res = err
-      }
-      expect(res.message).to.equal('Either no items, or item name was wrong/does not exist')
+      await expect(getPrice('oil')).to.be.rejectedWith(
+        'Either no items, or item name was wrong/does not exist'
+      )
     })
 
     it('should catch error if database is down', async () => {
       process.env.UNHAPPY = 'true'
-      console.log('process.env.UNHAPPY', process.env.UNHAPPY)
-      // getprice returns promise, so await getPrice does not return promise and this wont work
-      // expect(await getPrice()).to.be.rejected
-      await expect(getPrice()).to.be.rejectedWith('connect ECONNREFUSED 127.0.0.1:3211')
+      await expect(getPrice()).to.be.rejected
     })
   })
 })
